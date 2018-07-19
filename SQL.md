@@ -1,6 +1,6 @@
 ---
 Date : 
-Title : SQL Query
+Languate : SQL Query
 ---
 
 [TOC]
@@ -244,4 +244,224 @@ CREATE TABLE prof
   prof_labo NUMBER CHECK(100 <= prof_labo AND prof_labo <= 500)
 );
 ```
+
+
+
+## DDL
+
+### CREATE
+
+
+
+
+
+### ALTER
+
+
+
+
+
+### DROP
+
+
+
+
+
+### TRUNCATE
+
+
+
+
+
+## DML
+
+### SELECT
+
+> 데이터베이스 안에 있는 데이터를 조회하기 위해서 사용한다.
+
+```SQL
+SELECT 컬럼명1, 컬럼명2, ...
+FROM 테이블명
+WHERE 조건
+ORDER BY 컬럼명;
+```
+
+```SQL
+SELECT select_list [ INTO new_table ]
+[ FROM table_source ]	[ WHERE search_condition ]
+[ GROUP BY group_by_expression ]
+[ HAVING search_condition ]
+[ ORDER BY order_expression [ ASC | DESC ] ]
+```
+
+
+
+- 단독으로는 절대 사용될 수 없다. 필수로 FROM 이 따라오며, 그외 조건(WHERE) 이나 기타 다른 키워드를 사용할 수 있다.
+
+
+
+```SQL
+SELECT	*
+FROM		JIKWON;		-- JIKWON 테이블 조회
+
+SELECT	JIKWON_NO,
+				JIKWON_NAME
+FROM		JIKWON;		-- JIKWON 테이블의 NO 와 NAME 조회.
+
+
+SELECT	JIKWON_NO		AS 사번,
+				JIKWON_NAME	AS 직원명
+FROM		JIKWON;		-- JIKWON_NO 와 NAME 에 별명 부여.
+
+SELECT	JIKWON_NO 	사번,
+				JIKWON_NAME 직원명
+FROM		JIKWON;		-- 상동
+
+
+SELECT	JIKWON_NO
+				|| JIKWON_NAME
+FROM		JIKWON;		-- 연결연산자 사용 가능.
+
+SELECT	JIKWON_NO
+				|| JIKWON_NAME	AS 자료
+FROM		JIKWON;		-- 연결연산자 + 별명.
+
+SELECT	10,
+				'안녕',
+				12 / 3
+FROM		DUAL;		-- DUMMY TABLE.
+
+SELECT	JIKWON_NO,
+				JIKWON_NAME,
+				JIKWON_PAY
+FROM		JIKWON;		-- 3개 가능
+
+SELECT	JIKWON_NO,
+				JIKWON_NAME,
+				JIKWON_PAY
+				* 0.012	AS TAX
+FROM		JIKWON;		-- 연산 후 불러내기 가능. (PAY*0.012) NO,NAME,TAX 3가지 출력.
+
+SELECT	JIKWON_NAME
+				|| '님'
+FROM		JIKWON;		-- 문자열도 연산 가능.
+
+```
+
+
+
+### INSERT
+
+
+
+
+
+### UPDATE
+
+
+
+
+
+### DELETE
+
+
+
+
+
+
+
+### WHERE
+
+```SQL
+SELECT * 
+FROM   jikwon 
+WHERE  jikwon_jik = '대리';		-- 대리만 출력
+
+SELECT * 
+FROM   jikwon 
+WHERE  jikwon_no = 3;		-- 3번에 해당하는 과장만 출력
+
+SELECT * 
+FROM   jikwon 
+WHERE  jikwon_ibsail = '2011-03-03';		-- 입사일 11년3월3일인 사람 출력
+
+SELECT * 
+FROM   jikwon 
+WHERE  jikwon_ibsail = '2011/03/03';		-- 상동
+
+SELECT * 
+FROM   jikwon 
+WHERE  jikwon_no = 3
+				OR jikwon_no = 5;			-- 직원넘버 3번,5번 출력
+				
+SELECT * 
+FROM   jikwon 
+WHERE  jikwon_jik = '사원'
+				AND jikwon_gen = '여'
+				AND jikwon_pay <= 3000;		-- 사원이면서 여자이면서 연봉3천 이하 출력
+				
+SELECT * 
+FROM   jikwon 
+WHERE  jikwon_no >= 5
+				OR jikwon_no =< 10;			-- 직원넘버 5번에서 10번 사이 출력
+				
+SELECT *
+FROM	 jikwon 
+WHERE	 jikwon_ibsail 
+				BETWEEN '2001-1-1' 
+				AND '2005-12-31';			-- 2001-1-1 에서 2005-12-31 사이 입사한사람 출력
+				
+SELECT * 
+FROM 	 jikwon 
+WHERE  jikwon_no < 5 
+				OR jikwon_no > 10;		-- 5 미만 10 초과애들만 나옴.
+				
+SELECT * 
+FROM   jikwon 
+WHERE  NOT (jikwon_no < 5 OR jikwon_no > 10);		-- 5 미만 10 초과애들.
+				
+SELECT * 
+FROM 	 jikwon 
+WHERE  jikwon_no BETWEEN 5 AND 10;		-- 5와 10 사이 직원 출력.				
+				
+SELECT * 
+FROM 	 jikwon 
+WHERE  jikwon_gen = '남';		-- 남자만 출력
+
+SELECT * 
+FROM 	 jikwon 
+WHERE  jikwon_gen <> '남';		-- 여자만 출력
+
+SELECT * 
+FROM 	 jikwon 
+WHERE  jikwon_name = '홍길동';		-- 홍길동 출력
+
+SELECT * 
+FROM 	 jikwon 
+WHERE  jikwon_name = '홍';			-- 모든 홍 출력
+
+SELECT * 
+FROM 	 jikwon 
+WHERE  jikwon_name = '김'
+				AND jikwon_name <= '최';		-- 김씨와 최씨 출력
+				
+SELECT * 
+FROM 	 jikwon 
+WHERE  jikwon_name = '김' BETWEEN '김' AND '최';		-- 상동
+				
+SELECT * 
+FROM 	 buser 
+WHERE  buser_name IN ('총무부','전산부');		-- 총무부,전산부 출력
+
+SELECT * 
+FROM 	 jikwon 
+WHERE  jikwon_jik IN ('대리','과장','부장');	-- 대리 과장 부장 출력
+
+SELECT * 
+FROM 	 jikwon 
+WHERE  buser_num IN ('10','30')
+				ORDER BY buser_num ASC;	-- 부서넘버가 10과 30인 모든애들 출력
+```
+
+
 
