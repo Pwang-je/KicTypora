@@ -60,7 +60,7 @@ for (condition) {
 #### - for Each loop
 
 ```java
-for (var : collection) {
+for (type var : iterate) {
   statements;
 }
 ```
@@ -80,6 +80,23 @@ switch (expression) {
   default:
     statements
 }
+```
+
+```java
+switch (employee) {
+    case "사원":
+        msg = "말단입니다";
+        break;
+    case "대리":
+    case "과장":
+        msg = "집에 못가져";
+        break;
+    default:
+        System.out.println("그외");
+}
+System.out.println(msg);
+
+// switch 쓸 때, 출력을 위한 변수 선언을 꼭 해줄 것.
 ```
 
 
