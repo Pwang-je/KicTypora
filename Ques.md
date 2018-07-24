@@ -69,7 +69,21 @@ mindmap https://www.google.co.kr/search?q=Mindjet+MindManager+crack&source=lnms&
 
 select extract 년도, 달 뽑아내는 함수.
 
-** sql로 주민번호로 나이 뽑아내기**
+**sql로 주민번호로 나이 뽑아내기**
+
+---
+
+07-24
+
+1. union. union all.
+2. sub query?
+3. 
+
+
+
+
+
+
 
 ```sql
 -- 문1)총무부에서 관리하는 고객수 출력(고객 30살 이상만 작업에 참여) 
