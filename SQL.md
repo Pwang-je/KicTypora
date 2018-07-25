@@ -81,14 +81,6 @@ Languate : SQL Query
 
 
 
-## 정규화
-
-
-
-
-
-
-
 ## CONSTRAINT 제약조건
 
 > 잘못된 자료의 입력을 막기 위한 제약 조건.
@@ -372,6 +364,125 @@ FROM		JIKWON;		-- 문자열도 연산 가능.
 
 ### WHERE
 
+> 1. 검색 조건을 지정하는 SQL 절.
+> 2. 조건에 맞는 레코드만 선별함.
+> 3. column 에 포함 안되는 단지 *조건*만 씀.
+
+```sql
+SELECT	column_1, column_2, . . .
+FROM		table_name
+WHERE		condition;
+```
+
+
+
+
+
+## SQL Logical Operators 논리 연산자.
+
+### 1. BETWEEN
+
+```sql
+SELECT	컬럼명_1, 컬럼명_2, . . .
+FROM		테이블명
+WHERE		칼럼명 BETWEEN 칼럼변수 AND 칼럼변수;
+```
+
+### 2. IN
+
+```sql
+SELECT	컬럼명_1, 컬럼명_2, . . .
+FROM		테이블명
+WHERE		칼럼명 IN ( '칼럼변수','칼럼변수' );
+-- OR 을 계속 쓴것과 같은 효과를 가짐.
+```
+
+### 3. LIKE
+
+> - % 는 임의의 문자열(String), _ 는 임의의 문자(Char).
+> - 칼럼 내용이 특정 패턴에 맞는지 필터링 할때 사용함.
+> - 값의 일부가 일치하는 경우에도 사용함.
+
+```sql
+SELECT	컬럼명_1, 컬럼명_2, . . .
+FROM		테이블명
+WHERE		칼럼명	LIKE '이%'	OR 칼럼명 
+						  LIKE '김_'; 
+```
+
+`'이%' 는 이~ 이후의 글자를 뽑음`
+
+`'%이%' 는 ~이~ 이를 기준으로 앞과 뒤의 글자 모두 포함`
+
+`'김_' 는 김x 를 뽑음. '김__' 는 김xx 를 뽑음.`
+
+### 4. WHERE - IS NULL, IS NOT NULL
+
+> NULL 값을 찾으려면 IS NULL, NULL 값을 제외한 값을 보려면 IS NOT NULL.
+
+```sql
+SELECT	컬럼명_1, 컬럼명_2, . . .
+FROM		테이블명
+WHERE		칼럼명 IS(NOT) NULL;
+```
+
+### 5. NOT
+
+> 조건 이외의 모든 값 출력
+
+```sql
+SELECT	칼럼명_1
+FROM		테이블명
+WHERE		NOT 조건;
+
+SELECT	*
+FROM		Customers
+WHERE		NOT Country = 'Germany';
+-- Country가 'Germany'가 아닌 Customers 의 모든 필드 선택.
+```
+
+### 6. AND
+
+> AND 로 구분 된 **모든 조건**이 TRUE 이면 조건 출력.
+
+```sql
+SELECT	칼럼명_1
+FROM		테이블명
+WHERE		조건1 AND 조건2 AND 조건3 . . .;
+
+SELECT * FROM Customers
+WHERE Country='Germany' AND City='Berlin';
+-- Country 가 Germany 이고 도시가 Berlin 인 Customers 출력.
+```
+
+### 7. OR
+
+> OR 로 구분 된 **조건**이 TRUE 이면 조건 출력.
+
+```sql
+SELECT	칼럼명_1
+FROM		테이블명
+WHERE		조건1 OR 조건2 OR 조건3 . . .;
+
+SELECT * FROM Customers
+WHERE City='Berlin' OR City='München';
+-- 도시가 Berlin 또는 Munchen 인 Customers 의 모든 필드 선택.
+```
+
+### 8. 예시들.
+
+```sql
+SELECT * FROM Customers
+WHERE country = 'Germany' AND (city = 'Berlin' OR city = Munchen);
+-- country가 "Germany"이고 도시가 "Berlin"또는 "München"(복잡한 표현식을 형성하기 위해 괄호를 사용해야 함) 인 "Customers"의 모든 필드를 선택
+```
+
+```sql
+SELECT * FROM Customers
+WHERE NOT country = 'Germany' AND NOT country = 'USA';
+-- country가 "Germany"가 아니며 "USA"가 아닌 "Customers"의 모든 필드를 선택
+```
+
 ```SQL
 SELECT * 
 FROM   jikwon 
@@ -465,3 +576,147 @@ WHERE  buser_num IN ('10','30')
 
 
 
+## SQL Comparison Operators 비교 연산자
+
+| 연산자 |          설명           |
+| :----: | :---------------------: |
+|   =    |          같음           |
+|   !=   |        같지 않음        |
+|   <>   |        같지 않음        |
+|   <    |          작음           |
+|   >    |           큼            |
+|   <=   |       작거나 같음       |
+|   >=   |       크거나 같음       |
+|   !<   | 작지 않음 (>= 대체가능) |
+|   !>   | 크지 않음 (<= 대체가능) |
+
+
+
+
+
+
+
+
+
+## CASE - WHEN
+
+```sql
+case 표현식 
+	when 결과1 then
+				처리문1;
+  when 결과2 then
+				처리문2;
+	...
+	else
+			기타 처리문;
+end case;
+```
+
+```sql
+case when 표현식1 then
+			처리문1;
+		when 표현식2 then
+			처리문2;
+		...
+		else
+			기타 처리문;
+end case;
+```
+
+
+
+
+
+
+
+
+
+## Join
+
+### INNER JOIN
+
+> 복수 테이블들이 JOIN 조건을 **모두 만족**하는 레코드들만 선별. 
+
+```sql
+SELECT	column_name(s)
+FROM		table_1
+	INNER JOIN table_2 ON table_1.column_name = table_2.column_name;
+```
+
+
+
+### LEFT JOIN
+
+
+
+
+
+### RIGHT JOIN
+
+
+
+
+
+### FULL OUTER JOIN
+
+
+
+
+
+
+
+## VIEW
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## ETC
+
+### column 중복 값 제거(필터) 방법들.
+
+```sql
+-- ORACLE 데이터의 중복 값을 제거(필터)하는 방법
+-- RANK() OVER, DENSE_RANK() OVER, ROW_NUMBER() OVER 함수
+ 
+SELECT ID
+         , SALARY
+         , RANK() OVER (ORDER BY SALARY DESC) RANK_FUNC 
+     -- 같은 값 공통 순위 1등이 3명 있다면 다음 순위는 2등이 아닌 4등이 된다.
+         , DENSE_RANK() OVER (ORDER BY SALARY DESC) DENSE_RANK_FUNC 
+     -- 같은 값 공통 순위 1등이 3명 있다면 다음 순위는 2등이 된다.
+         , ROW_NUMBER() OVER (ORDER BY SALARY DESC) ROW_NUMBER_FUNC 
+     -- 같은 값 공통 순위 1등이 3명 있다해도 순위가 각각 1,2,3등 매겨진다.
+  FROM
+         (
+            SELECT 1 ID, 2000 SALARY FROM DUAL UNION ALL
+            SELECT 2 ID, 2200 SALARY FROM DUAL UNION ALL
+            SELECT 3 ID, 2400 SALARY FROM DUAL UNION ALL
+            SELECT 4 ID, 2600 SALARY FROM DUAL UNION ALL -- 2600 중복
+            SELECT 5 ID, 2800 SALARY FROM DUAL UNION ALL
+            SELECT 6 ID, 2600 SALARY FROM DUAL UNION ALL -- 2600 중복
+            SELECT 7 ID, 3000 SALARY FROM DUAL UNION ALL
+            SELECT 8 ID, 2600 SALARY FROM DUAL -- 2600 중복
+          );
+
+```
+
+
+
+### NULL 에 값 넣는 방법.
+
+`nvl(column, '임시직')`
+
+### 입사일 기준으로 근무년수 구하기.
+
+`TO_CHAR(SYSDATE, 'YYYY')- TO_CHAR(column_ibsail, 'YYYY')`
