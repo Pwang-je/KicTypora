@@ -267,6 +267,9 @@ CREATE TABLE prof
 
 ## DML
 
+> 어디에서(WHERE), 어떤 데이터(WHAT) 를 가져올 것인지로 구분되는데, '어디에서 (테이블 혹은 뷰에서)' 에 해당하는 내용을 FROM 절에서, '어떤 데이터' 에 해당하는 내용을 SELECT 에서 기술해 준다.
+> 그리고 '어떤 데이터' 는 다시 어떠한 조건에 맞는 데이터인지를 식별해야 하는데, 이 조건을 기술하는 부분이 WHERE 절. 
+
 ### SELECT
 
 > 데이터베이스 안에 있는 데이터를 조회하기 위해서 사용한다.
@@ -343,6 +346,49 @@ FROM		JIKWON;		-- 문자열도 연산 가능.
 
 
 ### INSERT
+
+> 신규로 데이터를 입력할 때 사용함.
+>
+> 기본형태, 컬럼명 생략 형태, INSER ~ SELECT 형태로 나눌 수 있다.
+
+```sql
+INSERT INTO 테이블명 ( 컬럼1, 컬럼2, . . .)
+VALUES ( 값1, 값2, 값3, . . .)
+```
+
+> `VALUES` 에 나오는 값의 수와 순서, 데이터 타입이 일치해야만 한다. 그렇지 않으면 입력 안됨.
+>
+>  SQL 오류 : ORA-00932 : 일관성 없는 데이터 유형
+
+```SQL
+-- 1. 기본형
+
+CREATE TABLE ex_1 
+      (
+		    col1 VARCHAR2(10),
+       	col2 NUMBER,
+        col3 date
+      );
+      -- 테이블 생성및 컬럼과 컬럼의 TYPE 지정.
+    
+INSERT INTO ex_1
+      (
+         col1, col2, col3
+      )
+VALUES
+      (
+				'ABC', 10, SYSDATE
+      );
+      
+      
+-- 2. 컬럼명 생략 형태 (많이씀)
+INSERT INTO ex_1 VALUES ('DEF', 20, SYSDATE);
+-- 테이블에 있는 컬럼의 타입에 맞추지 않으면 애러 발생.
+
+
+```
+
+
 
 
 
@@ -672,6 +718,222 @@ FROM		table_1
 
 
 
+
+
+
+
+
+
+
+
+
+## ACCOUNT
+
+```sql
+create user 계정명 identified by 비밀번호	-- 계정 생성
+drop user 계정명 [cascade]		-- 계정 삭제
+alter user 계정명 identified by 비밀번호	
+
+grant create synonym to 계정명;	-- synonym 부여하기.
+grant create public synonym to 계정명;  -- 같음.
+create synonym 가상테이블명 for 받아야될 계정명;	-- 동의어 생성
+
+conn USER_ID/USER_PASS  -- 계정 이동.
+
+1. create user USER_ID identified by USER_PASS;
+-- 생성하기
+2. grant connect,resource to USER_ID;
+-- 권한주기
+2-1. grant select on TARGET_name to TARGET_ID;
+-- select 권한을 garget_id 에 부여하기.
+3. drop synonym TABLE_NAME;
+-- 가상 테이블 삭제. 부여한 계정에서만 삭제 가능함.
+```
+
+
+
+#### 1. 계정 생성 및 삭제
+
+```SQL
+create user 유저명 identified by 비밀번호;
+
+delete user 유저명;
+```
+
+
+
+#### 2. 사용자 계정 넘어가기
+
+```sql
+conn another_user/pass;
+```
+
+
+
+#### 3. 권한 주는 법 Grant, 권한 삭제 Revoke
+
+> 시스템 계정은 절대적인 권한이 있기 때문에 다른 계정이 만든 테이블을 볼 수 있다.
+>
+> 일반 계정에서 다른 계정의 테이블을 보는 것은 권한 없이는 불가능하다.
+
+```sql
+grant 범위 to 사용자명;
+
+grant connect to a_user;	-- a_user 에 연결 할 수 있는 권한
+grnat resource to a_user;	-- a_user 에 기본 기능을 줄 수 있는 권한
+grant create table to a_user;		--	a_user 에 테이블을 만들 수 있는 권한
+grnat all to a_user;		-- a_user 에게 모든 권함을 줌.
+
+connect 는 접속권한,
+resource 는 객체(생성,수정,삭제), 데이터(입력,수정,조회,삭제) 권한.
+
+grant 권한 종류1, 권한 종류2 to 권한을 줄 사용자;
+grant connect, resource to a_user;
+
+
+revoke 권한 종류1, 권한 종류2 from 권한을 삭제 할 사용자;
+revoke connect, resource from a_user;
+```
+
+```sql
+connect 권한을 주지 않았을 경우,
+
+ERROR:
+ORA-01045: user A_USER lacks CREATE SESSiON privilege; logon denied.
+
+라고 뜸.
+```
+
+
+
+#### 4. 사용자에게 테이블과 뷰에 대한 권한 주는 법, 취소 법.
+
+```sql
+grant 범위 on 테이블명 및 뷰명 to 유저;
+
+grant select on JIKWON to A_USER;		-- A_USER 에게 JIKWON 테이블을 SELECT 할수 있는 권한을 줌.
+
+grant select, update on JIKWON to A_USER, B_USER;	
+-- A_USER, B_USER 에게 JIKWON 테이블을 select와 update할수 있는 권한 부여.
+
+grant all on JIKWON to A_USER;	-- A_USER 에게 직원 테이블에 대한 모든 권한 부여.
+
+grant select on VIEW_1_TABLE to A_USER;
+-- A_USER 에게 VIEW_1_TABLE 을 조회할수 잇는 권한 뷰여.
+
+
+revoke all on JIKWON from A_USER;	-- A_USER 에게 JIKWON 테이블에 대한 모든 권한 취소.
+```
+
+
+
+#### 4-1. 다른 사용자의 테이블 보는 법
+
+```sql
+1. 원본 테이블을 가진 계정에서 권한을 줘야 볼 수 있음.
+
+select * from ANOTHER_USER.JIKWON;
+
+show user;
+USER은 "A_USER"입니다.
+
+A_USER: grant select on JIKWON to tom;
+
+
+show user;
+USER은 "B_USER"입니다.
+
+B_USER: select * from A_USER.JIKWON;
+
+```
+
+
+
+#### 5. Role 생성 및 삭제, 사용자 추가 및 테이블 권한 주기.
+
+> 롤 생성 -> 롤에 권한 부여 -> 롤을 사용자 또는 롤에게 부여.
+
+```sql
+-- 롤 만들기.
+create role ROLE_NAME;
+
+
+-- 생성한 롤에 테이블 권한 주기.
+grant 범위 on 테이블명 to 롤명;
+
+grant select on USER.TABLE_NAME to ROLE_NAME;
+
+-- grant select on USER.TABLE_NAME to ROLE_NAME;	롤에 다른 유저 테이블의 직접 권한을 줌.
+
+
+
+-- 생성한 롤에 사용자를 추가하는 방법.
+grant 롤명 to 유저명;
+
+grant ROLE_NAME to A_USER;
+
+
+
+-- 롤 삭제.
+drop role ROLE_NAME;
+-- 롤을 삭제해도 그 안에 있는 사용자는 삭제되지 않고 권한만 삭제됨.
+```
+
+
+
+
+
+
+
+#### - 권한들 확인 방법.
+
+```sql
+
+
+
+-- 현재 롤 확인.
+select * from user_role_privs;
+
+-- 사용자에게 부여된 롤 확인하는 방법
+select * from DBA_ROLE_privs where GRANTEE = '사용자명';
+```
+
+
+
+
+
+
+
+
+
+#### - 시작부터 다른 테이블에 권한을 주고 확인까지.
+
+```sql
+-- user SYSTEM.
+
+1. create user USER_ID identified USER_PASS;
+
+2. create role ROLE_NAME;		-- 롤 생성.
+
+3. grant create session to USER_ID;		-- 세션 권한주기.
+
+4. grant create connect, resource to USER_ID;		-- 컨넥션, 리소스 권한 주기
+
+5. grant ROLD_NAME to USER_ID;		-- 롤 권한을 유저에게 주기.
+
+
+-- user MAIN_USER.
+
+6-1. grant select on TALBE_NAME to TARGET_USER_ID;		-- 유저에게 테이블 권한 주기.
+
+6-2. gramt select on TABLE_NAME to ROLD_NAME;		-- role 에 테이블 권한 주기.
+
+-- target_user 에게 권한을 주기보다 role_name 으로 롤에 권한을 주는게 맞음.
+
+
+-- user USER_ID
+7. select * from MAIN_USER.TABLE_NAME;		-- 메인유저 테이블을 조회.
+```
 
 
 
