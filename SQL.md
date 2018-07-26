@@ -913,14 +913,15 @@ select * from DBA_ROLE_privs where GRANTEE = '사용자명';
 
 1. create user USER_ID identified USER_PASS;
 
-2. create role ROLE_NAME;		-- 롤 생성.
+2. grant create connect, resource to USER_ID;		-- 컨넥션, 리소스 권한 주기
 
 3. grant create session to USER_ID;		-- 세션 권한주기.
 
-4. grant create connect, resource to USER_ID;		-- 컨넥션, 리소스 권한 주기
+4. create role ROLE_NAME;		-- 롤 생성.
 
-5. grant ROLD_NAME to USER_ID;		-- 롤 권한을 유저에게 주기.
+5. grant select on USER.TABLE_NAME to ROLE_NAME;	-- 롤에 테이블 권한 넣기.
 
+5-1. grant ROLD_NAME to USER_ID;		-- 롤 권한을 유저에게 주기.
 
 -- user MAIN_USER.
 
