@@ -631,7 +631,7 @@ end case;
 
 
 
-## Join
+## JOIN
 
 ### INNER JOIN
 
