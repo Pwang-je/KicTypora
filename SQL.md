@@ -638,7 +638,15 @@ WHERE  buser_num IN ('10','30')
 
 
 
+## SQL COUNT(), AVG(), COUNT()
 
+http://keep-cool.tistory.com/37
+
+http://loveiskey.tistory.com/60
+
+http://dinggur.tistory.com/101
+
+https://www.w3schools.com/sql/sql_quickref.asp
 
 
 
