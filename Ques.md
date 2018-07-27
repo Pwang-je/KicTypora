@@ -498,3 +498,358 @@ FROM   jikwon;
 
 `revoke all on Table_name from Account_name;` 모든권한 빼기
 
+
+
+
+
+
+
+
+
+---
+
+# java
+
+갯수를 알면 for
+
+모르면 while.
+
+
+
+build path 읽기.
+
+```java
+// 기본 골격.
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+
+public class DbTest1 {
+	
+	
+	private Connection conn;	// db 연결 객체
+	private java.sql.Statement stmt;	// sql 실행하는 클래스.
+	private ResultSet rs;		// select 문의 결과 접근
+
+}
+```
+
+
+
+
+
+jdbc
+
+```java
+try {
+			// 1. Driver 클래스 로딩
+			Class.forName("oracle.jdbc.driver.OracleDriver");	// class 와 Class 구별
+		} catch (Exception e) {
+			System.out.println("Driver 로딩 실패");
+			return;
+		}
+		
+		
+		try {
+			// 2. DB와 연결
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl","scott","tiger");
+		} catch (Exception e) {
+			System.out.println("DB 연결 실패");
+			
+		}
+		
+		
+		try {
+			// 3. SQL문을 사용해 자료 읽기
+			stmt = conn.createStatement();	// statements 객체 생성
+			
+			/*rs = stmt.executeQuery("select * from sangdata");
+			rs.next();	// Record pointer 이동. 2개이상의 레코드는 안됨. 오로지 하나만됨, 이동했을때 해당 레코드가 있으면 true, 없으면 false 를 리턴함.
+			
+			String code = rs.getString("code");		// sql select*from sang 에 있는 column 명이름.
+			String sangpum = rs.getString("sang");
+			int su = rs.getInt("su");
+			int dan = rs.getInt("dan");
+			System.out.println(code + " " + sangpum + " " + su + " " + dan + " ");*/
+			
+			
+			// 모든 자료 읽기.
+			String sql = "select code,sang,su as 수량,dan 단가 from sangdata";	// as 생략가능.
+			rs = stmt.executeQuery(sql);	// column 다쓰면 다뜸.
+			
+			int count = 0;
+			
+			while(rs.next()) {	// 자료가 있는 동안~~~~
+				String code = rs.getString("code");		// sql select*from sang 에 있는 column 명이름.
+				String sangpum = rs.getString("sang");	// 칼럼명에 따른 숫자대로 적어도됨. 1=code, 2=sang..
+				int su = rs.getInt("수량");
+				int dan = rs.getInt("단가");
+				System.out.println(code + " " + sangpum + " " + su + " " + dan + " ");
+				
+				count += 1;
+			}
+			
+			
+			// 건수 구하기
+			sql = "SELECT COUNT(*) FROM SANGDATA";
+			rs = stmt.executeQuery(sql);
+			rs.next();
+			System.out.println("건수는 " + rs.getInt(1) + "건이넹");	// 1번째가 count(*)로 위에 설정 되어있어서 1로 적어도됨.
+			System.out.println("건수는 " + count + "건이넹");	
+			/*
+			 * 자꾸 db접속하면 부하걸리니까 int=count =0; 으로 주고 count += 1;  이후에 sout 을 count로 바로줌.
+			 */
+			
+		} catch (Exception e) {
+			System.out.println("처리 실패");
+			
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(stmt != null) stmt.close();
+				if(conn != null) conn.close();
+			} catch (Exception e2) {
+				
+			}
+		}
+```
+
+
+
+properties
+
+```java
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.Properties;
+
+Properties properties = new Properties();
+		
+		// read
+
+		try {
+			properties.load(new FileInputStream("C:\\work\\jsou\\java_inter\\src\\java_inter\\ex1.properties"));
+			System.out.println(properties.getProperty("mes2"));
+			System.out.println(properties.getProperty("mes1"));
+		} catch (Exception e) {
+			System.out.println("읽기 실패" + e);
+		}
+		
+		
+		
+		// write
+		
+		try {
+			properties.setProperty("mes1", "nice");
+			properties.setProperty("mes2", "good");
+			properties.setProperty("mes3", "hello");
+			
+			properties.store(new FileOutputStream("C:\\work\\jsou\\java_inter\\src\\java_inter\\ex1.properties"), null);
+			System.out.println("저장 성공");
+		} catch (Exception e) {
+			System.out.println("쓰기 실패" + e);
+		}
+```
+
+select 만 execuetQuery 씀.
+
+secure coding
+
+```java
+package java_inter;
+
+import java.io.FileInputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.util.Properties;
+
+public class dbTest2 {
+
+	// secure coding 작업: 별도 정보 파일 읽기.
+	
+	
+	
+	private Connection conn;	// db 연결 객체
+	private java.sql.Statement stmt;	// sql 실행하는 클래스.
+	private ResultSet rs;		// select 문의 결과 접근
+	Properties properties = new Properties();
+	
+		
+	
+	
+	
+	
+		
+	
+	private void dbtest2() {
+	
+		try {
+			properties.load(new FileInputStream("C:\\work\\jsou\\java_inter\\src\\java_inter\\dbmeta.properties"));
+		} catch (Exception e) {
+			System.out.println("처리 오류:" + e.getMessage());
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(stmt != null) stmt.close();
+				if(conn != null) conn.close();
+			} catch (Exception e2) {
+				
+			}
+		}
+	
+	}
+	
+	public static void main(String[] args) {
+		
+		new dbTest2();
+
+	}
+
+}
+
+```
+
+
+
+#### 마지막 작업한거. 풀어내야함.
+
+```java
+package java_inter;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class DbTest3_gui extends JFrame implements ActionListener {
+
+	JButton btnAll = new JButton("전체");
+	JButton btnM = new JButton("남");
+	JButton btnF = new JButton("여");
+	JTextArea txtResult = new JTextArea();
+	
+	// SQL 담당.
+	Connection conn;
+	Statement stmt;
+	ResultSet rs;
+	
+	
+	
+	public DbTest3_gui() {
+		
+			setTitle("고객 테이블 출력");
+			
+			layInit();
+			accDb();
+			
+			setBounds(200,200,300,250);
+			setVisible(true);
+			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	private void layInit() {
+		JPanel panel = new JPanel();
+		panel.add(btnAll);
+		panel.add(btnM);
+		panel.add(btnF);
+		
+		txtResult.setEditable(false);	// read only.
+		JScrollPane pane = new JScrollPane(txtResult);
+		
+		add("Center", pane);
+		add("North", panel);
+		
+		btnAll.addActionListener(this);
+		btnM.addActionListener(this);
+		btnF.addActionListener(this);
+		
+	}
+	
+	
+	private void accDb() {
+		
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		} catch (Exception e) {
+			System.out.println("드라이버 로딩 실패:" + e);
+		}
+		
+		
+		
+	}
+	
+	
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		try {
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "scott", "tiger");
+			stmt = conn.createStatement();
+			String sql = "";
+			
+			sql = "SELECT GOGEK_NO, GOGEK_NAME, GOGEK_JUMIN FROM GOGEK";
+			
+			if(e.getSource() == btnAll) {
+				
+			} else if (e.getSource() == btnM) {
+//				sql += " WHERE GOGEK_JUMIN LIKE '%-1%'";
+				sql += " WHERE SUBSTR(GOGEK_JUMIN, 8, 1)=1";
+			} else if (e.getSource() == btnF) {
+				sql += " WHERE SUBSTR(GOGEK_JUMIN, 8, 1)=2";
+			}
+			
+			
+			/*System.out.println(sql);	// 확인용.
+*/			
+			txtResult.setText(null);	// ""  처음에 깨끗하게 비우기용.
+			
+			rs = stmt.executeQuery(sql);
+			int cou = 0;
+			while(rs.next()) {
+//				System.out.println(rs.getString(2));
+				
+				String str = rs.getString("GOGEK_NO") + "\t" +
+								rs.getString("GOGEK_NAME") + "\t" +
+								rs.getString("GOGEK_JUMIN") + "\n";
+				txtResult.append(str);
+				cou++;
+				
+			}
+			txtResult.append("인원수 : " + cou + " 명");
+		} catch (Exception e2) {
+			System.out.println("actionPerformed err:" + e2);
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(stmt != null) stmt.close();
+				if(conn != null) conn.close();
+			} catch (Exception e3) {
+				
+			}
+			
+		}
+		
+		
+	}
+	
+	
+	public static void main(String[] args) {
+		
+		new DbTest3_gui();
+
+	}
+
+}
+```
+
