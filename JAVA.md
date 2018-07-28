@@ -221,15 +221,95 @@ System.out.println(big);
 
 
 
+## Abstract and Interface
+
+### abstract
 
 
-## abstract
+
+![abstract-class-example](assets/abstract-class-example.png)
 
 
+
+* 추상 메소드가 하나 이상 포함되면 **반드시** 추상 클래스로 선언되야 한다.
+
+* 추상 클래스를 상속하는 자식 클래스에서는 부모가 가진 추상 메소드를 모두 override 해야한다.
+
+* 추상화클래스가 부모가 되고, 미완성된 부분을 자식 클래스에서 상속받은 후 완성시켜 사용한다.
+
+* 몸체따윈 없고 걍 선언부만 있다. ( 내용이 없음) 
 
 * 추상을 받는 클래스는 abstract를 써준다.
 
-  `public `
+* extends 로 상속 받는다. ( class Dog extends Animal )
+
+* 객체를 만들수 없다. ( Figure f1 = new Figure(); ) 이런거 안됨.
+
+  
+
+  #### - Structure
+
+  ```java
+  public abstract class 클래스명 {
+    ...
+      public abstract void 메소드명():
+    
+    	[접근제한자] abstract [return 자료형] [method 이름] (매개변수);
+  }
+  ```
+
+  
+
+  ```java
+  package prac;
+  
+  public abstract class Bird {    // 2. 여기도 abstract 를 써줘야 한다.
+      public abstract void sing();    // 1. abstract method 가 들어갈땐,
+  
+      public void fly() {         // 3. 일반 method 도 들어갈 수 있다.
+          System.out.println("날다.");
+      }
+  }
+  ```
+
+  ```java
+  package prac;
+  
+  public class Duck extends Bird {	// 4. Birds를 상속했기 때문에,
+  
+      @Override       // 5. Bird 에서 만들었던 sing 을 override 한다.
+      public void sing() {
+          System.out.println("꽥꽥!!!");
+      }
+  }
+  
+  ```
+
+  ```java
+  package prac;
+  
+  public class DuckExam {
+      public static void main(String[] args) {
+          Duck duck = new Duck(); // 1. duck 의 인스턴스.
+  
+          duck.sing();    // 2. abstract method 실행.
+          duck.fly();     // 3. 같이 있던 fly 도 같이 쓸 수 있다.
+      }
+  }
+  ```
+
+  ```console
+  꽥꽥!!!
+  날다.
+  ```
+
+  ![bbb](assets/bbb.png)
+
+  #### - purpose of Use
+
+* 공통되는 기능[함수]이 필요하지만, 어느 부분이 자식 클래스에서 달라질 경우 사용한다. ( 상속의 기본 개념과 유사함 )
+* 여러명의 자식 클래스에서 공통으로 수행되는 부분은 추상화 클래스에서 완성을 해주고 나머지 자식 클래스마다 개별적으로 동작해야 하는 부분만 추상화 메소드로 선언하여 이를 자식 클래스에서 강제적으로 완성.
+* 부모 클래스로 직접 객체 생성을 해야 하는 이유가 없는 경우.
 
 
 
