@@ -16,8 +16,7 @@ Language : JAVA
 #### - If
 
 ```java
-If statement.
-  if (expression) {
+if (expression) {
     statements;
   } else if (expression) {
     statements;
