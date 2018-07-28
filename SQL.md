@@ -164,7 +164,7 @@ CREATE TABLE 테이블명
 - 한개의 테이블에 하나만 생성 가능하다.
 - NOT NULL + UNIQUE 의 2개의 속성을 기본적으로 가진다.
 
-  ### CHECK
+  
 
 ```SQL
 CREATE TABLE 테이블명
@@ -205,7 +205,7 @@ CREATE TABLE student
 ( 
   std_number NUMBER(4) PRIMARY KEY, 
   std_name   VARCHAR2(30) NOT NULL, 
-  sub_name  NUMBER(4) REFERENCES lecture(lec_code), 
+  sub_name   NUMBER(4) REFERENCES lecture(lec_code), 
   std_grade  NUMBER DEFAULT 1 CHECK ( 1 <= std_grade AND std_grade >= 4) 
 ); 
 ```
@@ -452,8 +452,8 @@ WHERE		칼럼명 IN ( '칼럼변수','칼럼변수' );
 ```sql
 SELECT	컬럼명_1, 컬럼명_2, . . .
 FROM		테이블명
-WHERE		칼럼명	LIKE '이%'	OR 칼럼명 
-						  LIKE '김_'; 
+WHERE		칼럼명	LIKE '이%'	OR 
+			  칼럼명 LIKE '김_'; 
 ```
 
 `'이%' 는 이~ 이후의 글자를 뽑음`
@@ -638,7 +638,7 @@ WHERE  buser_num IN ('10','30')
 
 
 
-## SQL COUNT(), AVG(), COUNT()
+## SQL SUM(), AVG(), COUNT()
 
 http://keep-cool.tistory.com/37
 
@@ -935,7 +935,7 @@ select * from DBA_ROLE_privs where GRANTEE = '사용자명';
 
 6-1. grant select on TALBE_NAME to TARGET_USER_ID;		-- 유저에게 테이블 권한 주기.
 
-6-2. gramt select on TABLE_NAME to ROLD_NAME;		-- role 에 테이블 권한 주기.
+6-2. grant select on TABLE_NAME to ROLE_NAME;		-- role 에 테이블 권한 주기.
 
 -- target_user 에게 권한을 주기보다 role_name 으로 롤에 권한을 주는게 맞음.
 
