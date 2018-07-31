@@ -954,7 +954,7 @@ select * from DBA_ROLE_privs where GRANTEE = '사용자명';
 
 ## ETC
 
-### column 중복 값 제거(필터) 방법들.
+#### column 중복 값 제거(필터) 방법들.
 
 ```sql
 -- ORACLE 데이터의 중복 값을 제거(필터)하는 방법
@@ -984,10 +984,28 @@ SELECT ID
 
 
 
-### NULL 에 값 넣는 방법.
+#### NULL 에 값 넣는 방법.
 
 `nvl(column, '임시직')`
 
-### 입사일 기준으로 근무년수 구하기.
+
+
+#### 입사일 기준으로 근무년수 구하기.
 
 `TO_CHAR(SYSDATE, 'YYYY')- TO_CHAR(column_ibsail, 'YYYY')`
+
+
+
+#### Oracle, Maria Db 연결
+
+```sql
+-- for oracle.
+
+Class.forName("oracle.jdbc.driver.OracleDriver");
+        conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", "scott", "tiger")
+        
+-- for mariaDB.
+Class.forName("org.mariadb.jdbc.Driver");
+      conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "123");
+```
+

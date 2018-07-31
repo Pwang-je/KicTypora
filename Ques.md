@@ -1069,3 +1069,119 @@ mysql -u root -h 127.0.0.1 0p
 
 123
 
+```sql
+-- maria DB
+Class.forName("org.mariadb.jdbc.Driver");
+conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "123");
+
+-- oracle
+Class.forName("oracle.jdbc.driver.OracleDriver");
+      conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "scott", "tiger");
+```
+
+```sql
+String co = "1";  // 원래 외부값을 받아와야됨. 지금은 없으니 일단 만들어둠.
+      /*sql = "SELECT * FROM SANGDATA WHERE CODE =" + co;   // 이렇게 쓰면 안댐.*/
+      sql = "SELECT * FROM SANGDATA WHERE CODE =?"; // 이렇게 써야됨.
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setString(1,co);  // =? 가 있을 때 써줌.
+      rs = pstmt.executeQuery();
+      if (rs.next()) {
+        System.out.println(rs.getString(1));
+        System.out.println(rs.getString("sang"));
+        System.out.println(rs.getString("su"));
+        System.out.println(rs.getString("dan"));
+      } else {
+        System.out.println("그런자료 없음");
+      }
+```
+
+
+
+```java
+-- db연동sample
+
+Required Steps
+The following steps are required to create a new Database using JDBC application −
+
+Import the packages: Requires that you include the packages containing the JDBC classes needed for database programming. Most often, using import java.sql.* will suffice.
+
+Register the JDBC driver: Requires that you initialize a driver so you can open a communications channel with the database.
+
+Open a connection: Requires using the DriverManager.getConnection() method to create a Connection object, which represents a physical connection with a database server.
+
+Execute a query: Requires using an object of type Statement for building and submitting an SQL statement to insert records into a table.
+
+Clean up the environment: Requires explicitly closing all database resources versus relying on the JVM's garbage collection.
+  
+  //STEP 1. Import required packages
+import java.sql.*;
+
+public class JDBCExample {
+   // JDBC driver name and database URL
+   static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+   static final String DB_URL = "jdbc:mysql://localhost/STUDENTS";
+
+   //  Database credentials
+   static final String USER = "username";
+   static final String PASS = "password";
+   
+   public static void main(String[] args) {
+   Connection conn = null;
+   Statement stmt = null;
+   try{
+      //STEP 2: Register JDBC driver
+      Class.forName("com.mysql.jdbc.Driver");
+
+      //STEP 3: Open a connection
+      System.out.println("Connecting to a selected database...");
+      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+      System.out.println("Connected database successfully...");
+      
+      //STEP 4: Execute a query
+      System.out.println("Inserting records into the table...");
+      stmt = conn.createStatement();
+      
+      String sql = "INSERT INTO Registration " +
+                   "VALUES (100, 'Zara', 'Ali', 18)";
+      stmt.executeUpdate(sql);
+      sql = "INSERT INTO Registration " +
+                   "VALUES (101, 'Mahnaz', 'Fatma', 25)";
+      stmt.executeUpdate(sql);
+      sql = "INSERT INTO Registration " +
+                   "VALUES (102, 'Zaid', 'Khan', 30)";
+      stmt.executeUpdate(sql);
+      sql = "INSERT INTO Registration " +
+                   "VALUES(103, 'Sumit', 'Mittal', 28)";
+      stmt.executeUpdate(sql);
+      System.out.println("Inserted records into the table...");
+
+   }catch(SQLException se){
+      //Handle errors for JDBC
+      se.printStackTrace();
+   }catch(Exception e){
+      //Handle errors for Class.forName
+      e.printStackTrace();
+   }finally{
+      //finally block used to close resources
+      try{
+         if(stmt!=null)
+            conn.close();
+      }catch(SQLException se){
+      }// do nothing
+      try{
+         if(conn!=null)
+            conn.close();
+      }catch(SQLException se){
+         se.printStackTrace();
+      }//end finally try
+   }//end try
+   System.out.println("Goodbye!");
+}//end main
+}//end JDBCExample
+```
+
+
+
+jtable
+
