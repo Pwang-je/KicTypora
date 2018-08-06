@@ -1096,7 +1096,17 @@ String co = "1";  // 원래 외부값을 받아와야됨. 지금은 없으니 �
       }
 ```
 
+select
+jikon_no, jikwon_name
+from
+jikwon
+where
+buser_num
 
+select
+gogek_name, gogek_tel, gogek_jumin
+from gogek
+where gogek_damsano
 
 ```java
 -- db연동sample
@@ -1181,7 +1191,48 @@ public class JDBCExample {
 }//end JDBCExample
 ```
 
+```java
+// try catch finally
+
+try {
+      
+} catch (Exception e) {
+      
+} finally {
+      try {
+        if(rs != null) rs.close();
+        if(pstmt != null) pstmt.close();
+        if(conn != null) conn.close();
+      } catch (Exception e2) {
+       
+      }
+}
+```
+
 
 
 jtable
+
+```java
+sout("값: " + model.getValueAt(table))
+  
+열번호 고정하고 값 얻기.
+  sout("열고정 값: " + model.getValueAt(table.getSelectedRow(), 1));
+	// 1열 고정.
+
+
+
+table.addMouseListener(new MouseAdapter() {
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			table = (JTable)e.getComponent();
+			model = (DefaultTableModel)table.getModel();
+		}
+	});
+
+```
+
+
+
+`http://egloos.zum.com/sweeper/v/3002133  조인`
 
