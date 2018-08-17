@@ -7,8 +7,6 @@ Language : JAVA
 
 
 
-
-
 ## Terms
 
 ### Java Statement

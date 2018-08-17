@@ -687,9 +687,15 @@ end case;
 
 ## JOIN
 
+
+
+![BHVicYICMAAdHGv](assets/BHVicYICMAAdHGv.jpg)
+
+
+
 ### INNER JOIN
 
-> 복수 테이블들이 JOIN 조건을 **모두 만족**하는 레코드들만 선별. 
+> 
 
 ```sql
 SELECT	column_name(s)
@@ -700,6 +706,14 @@ FROM		table_1
 
 
 ### LEFT JOIN
+
+> 조인문의 **왼쪽**에 있는 테이블의 모든 결과를 가져온 후 **오른쪽** 테이블의 데이터를 매칭하고, 매칭되는 **데이터가 없는 경우** NULL을 표시.
+
+```sql
+SELECT column_name(s)
+FROM	 table_1
+	LEFT JOIN table_2 ON table_1.column_name = table_2.column_name;
+```
 
 
 
@@ -942,6 +956,43 @@ select * from DBA_ROLE_privs where GRANTEE = '사용자명';
 
 -- user USER_ID
 7. select * from MAIN_USER.TABLE_NAME;		-- 메인유저 테이블을 조회.
+```
+
+
+
+## SQL Hint
+
+
+
+
+
+
+
+
+
+
+
+## 자잘자잘
+
+#### 최적의 테이블 결합 처리 선택
+
+|              |                                                  |                                                              |
+| ------------ | ------------------------------------------------ | ------------------------------------------------------------ |
+| Nested Loops | INDEX 사용                                       | 소수 처리에 적합                                             |
+| Hash         | 해시 테이블 생성, 해당 해시 기반으로 레코드 검색 | 테이블 풀 스캔에 따른 성능저하 이후 고속으로 대량의 레코드 검색 가능. |
+
+```sql
+-- NESTED LOOPS.
+
+SELECT /*+ ORDERED USE_NL */ (TABLE_NAME1, TABLE_NAME2)
+
+SELECT /*+ ORDERED USE_NL(e) */ *
+FROM	DEPT D, EMP E
+WHERE	D.DEPTNO = E.DEPTNO;
+
+-- ORDERED: FROM 절에 있는 순서대로 테이블을 조인
+-- USE_NL: NL방식으로 조인.
+-- => DEPT 테이블을 기준으로, EMP 테이블을 NL 방식으로 조인해라.
 ```
 
 
