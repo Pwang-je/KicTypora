@@ -45,7 +45,7 @@ arr = ["1","2","3","4","5"];
 
 
 
-## If, Case, While
+## If, Case, While, do while, For, For in
 
 
 
@@ -81,5 +81,42 @@ function daysInMonth( month ){
 }
 
 // 이런식으로 여러개의 값을 한 번에 처리하려면 case 를 여러번 적어 줘야 함.
+```
+
+
+
+### do while
+
+```javascript
+do{
+    /* 반복 실행될 코드 */
+}while( /*조건식*/ );
+       
+// do 가 실행되고 난 후 while 의 조건식을 보고 판단함.
+```
+
+
+
+### For in
+
+```javascript
+var obj = {
+  name: "object",
+  weight: 30,
+  isObject:true,
+  arr:[1,2,3],
+  obj:{property:1}
+};
+
+object.keys(obj);
+// 결과
+["name","weight","isObject","arr","obj"]
+
+// -> object.keys(변수) 는 해당 변수가 가진 object가 무엇인지를 반환한다.
+
+
+
+
+
 ```
 

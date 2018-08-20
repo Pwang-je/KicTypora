@@ -84,7 +84,6 @@ end case;
    to_char(sysdate,'YYYY') - to_char(column_ibsail, 'YYYY')
    ```
 
-   
 
 
 
@@ -156,7 +155,6 @@ select extract 년도, 달 뽑아내는 함수.
    
    ```
 
-   
 
 - 계정.
 - http://cafe.daum.net/flowlife
@@ -1259,3 +1257,48 @@ Store / Folder : 메일 박스 및 메일 폴더 지정
 //환경설정 Properties 
 
 Properties props = new Properties();props.put("mail.smtp.starttls.enable", "true");props.put("mail.transport.protocol", "smtp");props.put("mail.smtp.host", "smtp.gmail.com");props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");props.put("mail.smtp.port", "465");props.put("mail.smtp.auth", "true");  
+
+
+
+자바 패스 확인방법.
+
+IP확인방법
+
+자바 버전 확인방법. CMD로.
+
+환경변수 설정하는 방법.
+
+GETTER, SETTER 쓰는법.
+
+PACKAGE 작성방법. 왜만드는지?
+
+S로 시작하는거 뭐임? 클래스. 스트링 버퍼인가?
+
+TCP/IP 기반 네트워크 프로그램할때 서버와 클라이언트에서 
+통신할때 사용하는 클래스들.
+
+TCP/IP와 UDP의 특징을 써라.
+
+PROTOCOL의 대표적인 종류와 그게 뭔지.
+
+자바 컴파일하고 실행할때 쓰는 CMD 명령어.
+
+메소드 오버라이딩의 조건.
+
+오버로딩은 뭔지?
+
+DB연결할때, JDBC할때. CLASSFORNAME 의 역할, RESULTSET 이무너지 등등
+
+메소드 만들때 반환형, 파라미터, 등등. 작성유형에 대하여.
+
+기본형 데이터를 가지고 형변환 하는 방법. 예를 들어서 쓰면 됨.(강제,자동)
+
+PRIVATE 멤버에 값주는 방법 코딩.
+
+INTERFACE를 상속하고 구현하고 하는것들.
+
+상속에 대해서 설명하시오.
+
+PREPARESTATEMENT 쓰는 방법.
+
+스트링 버퍼에 담은걸 TXT로 뱉을때 쓰는 메소드.
