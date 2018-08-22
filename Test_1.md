@@ -71,7 +71,7 @@ tcp/ip : 소켓.
 
 udp : 데이타그램 소켓.
 
-
+-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.1\bin\JetbrainsCrack.jar
 
 ### tcp/ip 와 udp의 특징 비교.
 
@@ -101,13 +101,21 @@ Overriding.
 
 조상 클래스로부터 상속 받은 메서드의 내용을 변경하는 것.
 
+```markdown
+- 부모와 자식 관계에서만 성립.
+- static은 상속 안됨
+- private 도 상속 안됨
+- interface를 구현할땐 반드시 public으로 해야됨
+- final 은 오버라이딩 안됨
+```
+
 
 
 ### 오버로딩은 무엇인가?
 
 오버로딩 : 한 클래스 내에 같은 이름의 메소드를 여러 개 정의하는 것.
 
-조건 : 메소드 이름은 같아야 하고 매개변수의 개수 또는 타입이 달라야 함.
+조건 : 메소드 이름은 같아야 하고 매개변수가 달라야 함.
 
 
 
@@ -120,7 +128,7 @@ Overriding.
 ### jdbc 할 때, class.forname, pstmt, rs의 역할
 
 ```java
-Driver 클래스 로딩 = 램으로 끌어 올리는 것.
+Driver 클래스가 메모리로 로드함.
  Class.forName("oracle.jdbc.driver.OracleDriver");
 pstmt - 작성한 sql문을 가져오는 것.
   rs - 가져온 sql문을 실행하는 것.
@@ -133,6 +141,7 @@ pstmt - 작성한 sql문을 가져오는 것.
 ```java
 public void,
 int String.
+  // 접근지정자 반환명 메소드명(매개변수) {}
 ```
 
 
@@ -188,13 +197,13 @@ public class CLASS_NAME implements INTERFACE_NAME {
 ### 상속에 대하여
 
 ```java
-// 기존의 클래스를 재사용하여 새로운 클래스를 작성 하는 것.
-
 // 조상 클래스.
 	parent, super, base.
   
 // 자손 클래스.
   child, sub, derived.
+
+// 부모 클래스가 가지고 있는 모든걸 자식클래스가 물려받아 같이 공유하며 확장하는 개념.
 ```
 
 
