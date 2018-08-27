@@ -1306,3 +1306,5 @@ PREPARESTATEMENT 쓰는 방법.
 
 
 json 으로 xml 넘겨받기. (파싱) 후 원하는 값만 빼오기.
+
+http://araikuma.tistory.com/272 세션과 쿠키.

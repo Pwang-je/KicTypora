@@ -164,7 +164,6 @@ CREATE TABLE 테이블명
 - 한개의 테이블에 하나만 생성 가능하다.
 - NOT NULL + UNIQUE 의 2개의 속성을 기본적으로 가진다.
 
-  
 
 ```SQL
 CREATE TABLE 테이블명
@@ -933,11 +932,11 @@ select * from DBA_ROLE_privs where GRANTEE = '사용자명';
 ```sql
 -- user SYSTEM.
 
-1. create user USER_ID identified USER_PASS;
+1. create user USER_ID identified by USER_PASS;
 
-2. grant create connect, resource to USER_ID;		-- 컨넥션, 리소스 권한 주기
+2. grant create session to USER_ID;		-- 세션 권한주기.
 
-3. grant create session to USER_ID;		-- 세션 권한주기.
+3. grant connect, resource to USER_ID;		-- 컨넥션, 리소스 권한 주기
 
 4. create role ROLE_NAME;		-- 롤 생성.
 
