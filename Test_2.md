@@ -8,7 +8,12 @@
 
 ### 부서별 근무직원 목록 출력. SELECT문
 
-
+```sql
+SELECT BUSER_NAME, JIKWON_NAME
+FROM	JIKWON INNER JOIN BUSER
+	ON BUSER_NUM = BUSER_NO
+	ORDER BY BUSER_NAME;
+```
 
 
 
@@ -18,6 +23,8 @@
 sqlplus system/oracle
 
 ALTER USER SCOTT ACCOUNT UNLOCK;	-- 잠금해제
+
+트랜잭션 중 데드락을 방지하기 위함임.
 ```
 
 
@@ -25,7 +32,7 @@ ALTER USER SCOTT ACCOUNT UNLOCK;	-- 잠금해제
 ### 트랜잭션, COMMIT 과 ROLLBACK 왜쓰는지
 
 ```SQL
---트랜잭션은 SELECT, INSERT, UPDATE, DELETE 를 쓰기 위해 데이터베이스에 접근하는 것을 의미함.
+--트랜잭션은 SELECT, INSERT, UPDATE, DELETE 를 쓰기 위해 데이터베이스에 접근하는 것을 의미함. DML.
 
 -- 트랜잭션의 처리 과정을 DB에 저장하기 위해 COMMIT 을 쓴다.
 
@@ -49,11 +56,7 @@ CREATE TABLE EXAM_1 (
 ### DELETE 와 TRUNC 의 차이.
 
 ```SQL
-DROP = 테이블의 정의 자체를 완전 삭제. ROLLBACK이 불가능함.
-
-DELETE = COMMIT 이전에는 ROLLBACK 이 가능함.
-
-TRUNCATE = 테이블을 최초 생성된 초기상태로 만듬. ROLLBACK 불가능.
+DELETE는 값을 삭제하지만 COMMIT 과 ROLLBACK 이 가능함. TRUNCATE도 삭제는 가능하지만 자동 COMMIT 이라서 ROLLBACK 불가능.
 ```
 
 
@@ -78,6 +81,7 @@ ALIAS 임. 객체(TABLE, VIEW, SEQUENCE, PROCEDURE)에 대한 직접적 참조�
 2. PUBLIC SYNONYM = 데이터베이스 안에 있는 모든 사용자가 공유함.
 
 CREATE PUBLIC SYNONYM name FOR object_name;
+create public synonym 만들_테이블이름 for 원본_테이블이름. 
 ```
 
 
