@@ -7,6 +7,10 @@ Language : JAVA
 
 
 
+
+
+# JAVA
+
 ## Terms
 
 ### Java Statement
@@ -546,6 +550,10 @@ public myLayout() {
 > 패널명.setBackground(Color.red);
 
 
+
+
+
+# JAVA Beans
 
 
 

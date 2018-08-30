@@ -1308,3 +1308,27 @@ PREPARESTATEMENT 쓰는 방법.
 json 으로 xml 넘겨받기. (파싱) 후 원하는 값만 빼오기.
 
 http://araikuma.tistory.com/272 세션과 쿠키.
+
+`beans 쓰는법.`
+
+```jsp
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    request.setCharacterEncoding("UTF-8");	// charset.
+%>
+
+<jsp:useBean id="jsp안에서 쓸 아이디이름" class="java class파일" />
+<jsp:setProperty property="*" name="useBean 의 id값."/>
+<html>
+  <head>
+    <body>
+      <!-- 중간에 java를 쓸 때는 <% %> 를 써준다. -->
+      <% for (int i = 0; i < 10; i ++) {
+  						
+					}
+      %>
+    </body>
+  </head>
+</html>
+```
+

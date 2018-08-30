@@ -92,7 +92,7 @@ create public synonym 만들_테이블이름 for 원본_테이블이름.
 -- 뷰를 만들 권한을 줌.
 GRANT CREATE VIEW TO SCOTT;
 
-CREATE OR REPLACE VIEW v_v AS
+CREATE OR REPLACE VIEW v_v ASㅊ
 SELECT JIKWON_NAME
 FROM SCOTT.JIKWON;
 
