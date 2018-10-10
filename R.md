@@ -79,6 +79,124 @@ null 은 변수값이 아직 미정인 상태.
 
 
 
+## 두 그룹의 평균 비교 -  t-test, MWW test, Welch's t-test
+
+
+
+```R
+
+# 두 그룹의 평균 비교에는 3가지 통계법만 사용함.
+#  - 1. t-test
+#  - 2. Mann-Whitney U test(Wilcoxon rank-sum test) - 비모수적 통계방법.
+#  - 3. Welch's t-test
+ 
+#  1. 결과값이 연속변수냐? -> 정규분포를 하냐? -> 등분산인지? -> (1번방법 : t-test)
+#                                               아닌지? -> (3번방법 : welch's t-test)
+#                       ->         안하냐? -> (2번방법 : MWU test) 
+#               아니냐?  -> (2번방법 : MWU test)
+
+
+install.packages("moonBook")
+library(moonBook)
+
+data(acs)
+summary(acs)
+str(acs)
+head(acs)
+
+#   age    sex cardiogenicShock   entry              Dx   EF height weight
+# 1  62   Male               No Femoral           STEMI 18.0    168     72
+# 2  78 Female               No Femoral           STEMI 18.4    148     48
+# 3  76 Female              Yes Femoral           STEMI 20.0     NA     NA
+# 4  89 Female               No Femoral           STEMI 21.8    165     50
+# 5  56   Male               No  Radial          NSTEMI 21.8    162     64
+# 6  73 Female               No  Radial Unstable Angina 22.0    153     59
+
+#        BMI obesity  TC LDLC HDLC  TG  DM HBP smoking
+# 1 25.51020     Yes 215  154   35 155 Yes  No  Smoker
+# 2 21.91381      No  NA   NA   NA 166  No Yes   Never
+# 3       NA      No  NA   NA   NA  NA  No Yes   Never
+# 4 18.36547      No 121   73   20  89  No  No   Never
+# 5 24.38653      No 195  151   36  63 Yes Yes  Smoker
+# 6 25.20398     Yes 184  112   38 137 Yes Yes   Never
+
+
+# 1. 정규성을 먼저 검사. = p-value 가 0.05 보다 크면 정규성을 갖는다.
+moonBook::densityplot(age ~ sex, data = acs)
+shapiro.test(acs$age[acs$sex == "Male"])
+    # data:  acs$age[acs$sex == "Male"]
+    # W = 0.99631, p-value = 0.2098
+
+shapiro.test(acs$age[acs$sex == "Female"])
+    # data:  acs$age[acs$sex == "Female"]
+    # W = 0.96138, p-value = 6.34e-07
+
+wilcox.test(age ~ sex, data = acs)
+    # W = 115270, p-value < 2.2e-16
+
+# 2. 등분산을 검사. (두 그래프의 뾰족함의 정도가 비슷한지? 를 검증하는 방법 )
+var.test(age ~ sex, data = acs)
+    # F = 0.91353, num df = 286, denom df = 569, p-value = 0.3866
+    # p-value 가 0.05 보다 크다면 등분산을 한다. (뾰족함의 정도가 비슷하다 = 둘이 비교해도 문제 없다.)
+
+# 3. t-test;
+# t.test(종속변수 ~ 단독변수, 데이터, 등분산을 했냐? = TRUE)
+t.test(age ~ sex, data = acs, var.equal = T)
+    # t = 10.071, df = 855, p-value < 2.2e-16
+    # mean in group Female   mean in group Male 
+    #             68.67596             60.61053 
+    # 이 여성 그룹이 연령대가 더 높은 것은 통계적으로 의미를 갖는다.
+
+# 3-1. 정규분포는 하지만, 등분산은 아닐때. = Welch's test. 
+t.test(age ~ sex, data = acs, var.equal = F)
+    # t = 10.222, df = 596.99, p-value < 2.2e-16
+    # mean in group Female   mean in group Male 
+    #             68.67596             60.61053 
+```
+
+
+
+
+
+## 세 그룹(혹은 그 이상의 평균 비교)
+
+> 1) 결과값이 연속변수인지 아닌지,
+> 2) 연속변수라면 ~ 정규분포를 따르는지 안따르는지,
+> 3) 등분산을 만족 하는지 안하는지.
+
+```R
+# 세 그룹, 혹은 그 이상의 평균 비교에는 3가지 통계법만 사용함.
+#  - 1. ANOVA test
+#  - 2. Kruskal-wallis H test
+#  - 3. Welch's ANOVA
+ 
+#  1. 결과값이 연속변수냐? -> 정규분포를 하냐? -> 등분산인지? -> (1번방법 : ANOVA test)
+#                                               아닌지? -> (3번방법 : Welch's ANOVA)
+#                       ->         안하냐? -> (2번방법 : Kruskal-wallis H test) 
+#               아니냐?  -> (2번방법 : Kruskal-wallis H test)
+
+
+# 정규분포 확인
+# 정규 1. 하나씩 다 쳐보기
+shapiro.test(acs$LDLC[acs$Dx == "NSTEMI"])
+# W = 0.89996, p-value = 1.56e-08   p-value < 0.05 정규분포 하지 않음!
+shapiro.test(acs$LDLC[acs$Dx == "STEMI"])
+# W = 0.99574, p-value = 0.6066  p-value > 0.05 정규분포!
+shapiro.test(acs$LDLC[acs$Dx == "Unstable Angina"])
+# W = 0.96889, p-value = 2.136e-07  p-value < 0.05 정규분포 하지 않음!
+
+# 정규 2. 3개를 하나로 묶어서 p-value 뽑기.
+out = aov(LDLC ~ Dx, data = acs)
+shapiro.test(resid(out))
+# shapiro.test(resid(aov(LDLC ~ Dx, data = acs))) = 한줄로 하기.
+# W = 0.97137, p-value = 1.024e-11  세 그룹 중 하나 이상이 정규분포 안함.
+
+# 3개 중 1개만 정규분포이기 때문에, 정규분포를 대체적으로 따르지 않는다고 봄.
+# 따라서, Kruskal-wallis H test 를 한다.
+```
+
+
+
 
 
 ## 2. 선형회귀
@@ -297,6 +415,38 @@ F-statistic: 295.5 on 3 and 146 DF,  p-value: < 2.2e-16
 
 
 #### SVM
+
+
+
+
+
+#### Excel -> CSV
+
+- 쉼표로 구분된 값으로 (다른이름으로 저장).
+
+
+
+
+
+#### Power Analysis
+
+```md
+실험군과 대조군의 모집이 항상 필요하고, 실험군과 대조군의 모집인원에 따라 연구비의 규모가 달라짐
+가장 이상적인건, 최소의 인원으로 충분히 의미있는 결과를 뽑아내는 것인데,
+바로 이때 최소의 인원이 몇 명이 필요한지를 계산해 내는 것이 power analysis.
+```
+
+- 비모수 :  정규분포를 하지 않을 때,
+- 모수적 : 정규분포를 할 때,
+
+1. n 수가 적어서인지, (on going)
+2. n 수는 충분하지만 실제로 두 그룹간의 결과가 차이가 없는지 모를때.
+
+##### 비모수적 통계계산
+
+```md
+2개의 집단에서 평균을 내는데 있어서, 갑자기 A집단에 큰 숫자가 들어 왔을 때 급격하게 평균값이 상승하는것을 막기 위해 점수가 아닌 다른 방법(등수)으로 계산을 하기 위한 방법. (Rank-sum test)
+```
 
 
 
